@@ -7,6 +7,7 @@ type StorageConfig struct {
 	BaseURL         string `mapstructure:"base_url"`
 	Region          string
 	ACL             string
+	Endpoint        string
 	AccessKeyID     string `mapstructure:"access_key_id"`
 	BucketName      string `mapstructure:"bucket_name"`
 	SecretAccessKey string `mapstructure:"secret_access_key"`

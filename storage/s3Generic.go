@@ -58,9 +58,10 @@ func (s *S3Generic) Save(filepath string, file gostorages.File) error {
 	if err != nil {
 		return err
 	}
+	key := s.Path(filepath)
 	input := &s3.PutObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 		Body:   bytes.NewReader(buffer),
 	}
 	_, err = s.client.PutObject(input)
@@ -72,9 +73,10 @@ func (s *S3Generic) Path(filepath string) string {
 }
 
 func (s *S3Generic) Exists(filepath string) bool {
+	key := s.Path(filepath)
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 	}
 	_, err := s.client.GetObject(input)
 	if err != nil {
@@ -85,18 +87,20 @@ func (s *S3Generic) Exists(filepath string) bool {
 }
 
 func (s *S3Generic) Delete(filepath string) error {
+	key := s.Path(filepath)
 	input := &s3.DeleteObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 	}
 	_, err := s.client.DeleteObject(input)
 	return err
 }
 
 func (s *S3Generic) Open(filepath string) (gostorages.File, error) {
+	key := s.Path(filepath)
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 	}
 	resp, err := s.client.GetObject(input)
 	if err != nil {
@@ -109,9 +113,10 @@ func (s *S3Generic) Open(filepath string) (gostorages.File, error) {
 }
 
 func (s *S3Generic) ModifiedTime(filepath string) (time.Time, error) {
+	key := s.Path(filepath)
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 	}
 	resp, err := s.client.GetObject(input)
 	if err != nil {
@@ -122,9 +127,10 @@ func (s *S3Generic) ModifiedTime(filepath string) (time.Time, error) {
 }
 
 func (s *S3Generic) Size(filepath string) int64 {
+	key := s.Path(filepath)
 	input := &s3.GetObjectInput{
 		Bucket: aws.String(s.bucket),
-		Key:    aws.String(filepath),
+		Key:    aws.String(key),
 	}
 	resp, err := s.client.GetObject(input)
 	if err != nil {
